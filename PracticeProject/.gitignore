@@ -1,0 +1,118 @@
+﻿## =========================
+## Visual Studio & .NET
+## =========================
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.sln
+
+# VS cache/options
+.vs/
+*.vcxproj.user
+*.csproj
+*.csproj.user
+
+# Build results
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Tt]emp/
+Debug/
+Release/
+x64/
+x86/
+[Aa]rtifacts/
+
+# ASP.NET specific
+App_Data/
+App_Browsers/
+App_Code/
+App_WebReferences/
+
+# IIS Express
+iisexpress/
+
+# SQL Server / LocalDB
+*.mdf
+*.ldf
+
+# Test results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+*.trx
+*.coverage
+*.coveragexml
+
+# NuGet
+packages/
+*.nupkg
+*.snupkg
+project.lock.json
+*.nuget.props
+*.nuget.targets
+
+# ReSharper / Rider
+_ReSharper*/
+*.DotSettings.user
+.idea/
+
+# NCrunch
+_NCrunch_*
+.*crunch*.local.xml
+
+# DotCover
+*.dotCover
+
+# VS profiler
+*.psess
+*.vsp
+*.vspx
+*.sap
+
+# Auto-generated intermediate files
+*_i.c
+*_p.c
+*.ilk
+*.meta
+*.obj
+*.pch
+*.pdb
+*.pgc
+*.pgd
+*.rsp
+*.sbr
+*.tlb
+*.tli
+*.tlh
+*.tmp
+*.tmp_proj
+*.log
+*.vspscc
+*_i.asm
+*_p.asm
+*.cachefile
+
+# Other DB/project files
+*.dbmdl
+*.bak
+*.sdf
+*.db
+*.opendb
+*.sqlite
+*.sqlite3
+
+# Misc / OS junk
+*.swp
+*.orig
+*.rej
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+
+[Ss]cripts/
+[Cc]ontent/
+packages.config

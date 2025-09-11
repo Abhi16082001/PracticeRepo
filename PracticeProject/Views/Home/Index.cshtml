@@ -1,0 +1,23 @@
+﻿@model PracticeProject.Models.Employee
+    @using(@Html.BeginForm("Save", "Home", FormMethod.Post))
+            {
+        @Html.Label("Hobbies : ")
+        foreach(var item in TempData["Hobbies"] as List<string>)
+                {
+<div>    @Html.CheckBox(item)@item </div>
+                }
+        <br />
+        @Html.Label("Choose Country : ")
+        @Html.DropDownListFor(Model=>Model.country,new SelectList(TempData["countries"] as List<string>));
+        <br />
+        <br />
+        <input type="submit" value="Save" />
+            }
+
+
+<div>
+    Employee Country : @(Model?.country)
+    <br /> <br />
+    Employee Hobbies : @(Model?.Hobbies)
+
+</div>
