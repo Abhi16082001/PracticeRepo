@@ -27,5 +27,10 @@ namespace PracticeProject.Models
         public string country { get; set; }
         public List<string> countrylist { get; set; }      
         public List<string> hobbylist { get; set; }
+
+
+
+
+
     }
 }
