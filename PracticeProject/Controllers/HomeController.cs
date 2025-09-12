@@ -14,6 +14,7 @@ namespace PracticeProject.Controllers
         {          
             TempData["Hobbies"] = obj.hobbylist;
             TempData["countries"]=obj.countrylist;
+            TempData.Keep();
             return View();
         }
 
@@ -33,19 +34,18 @@ namespace PracticeProject.Controllers
 
         [HttpPost]
         public ActionResult Save(Employee emp, FormCollection col)
-        {            
-            string hoby = string.Empty;
-            foreach(var item in obj.hobbylist)
-            {
-                if (col[item].ToString().Contains("true"))
-                {
-                    hoby += item + ", ";
-                }
-            }
+        {
+            //string hoby = string.Empty;
+            //foreach(var item in obj.hobbylist)
+            //{
+            //    if (col[item].ToString().Contains("true"))
+            //    {
+            //        hoby += item + ", ";
+            //    }
+            //}
+            string hoby = col["Hobbies"];
             obj.Hobbies = hoby;
             obj.country = emp.country;
-            TempData["Hobbies"] = obj.hobbylist;
-            TempData["countries"] = obj.countrylist;
             return View("Index",obj);
         }
     }

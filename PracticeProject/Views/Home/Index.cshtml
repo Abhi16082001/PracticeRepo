@@ -1,10 +1,11 @@
 ﻿@model PracticeProject.Models.Employee
     @using(@Html.BeginForm("Save", "Home", FormMethod.Post))
             {
-        @Html.Label("Hobbies : ")
+        @Html.Label("Hobbies : ") <br />
         foreach(var item in TempData["Hobbies"] as List<string>)
                 {
-<div>    @Html.CheckBox(item)@item </div>
+@*<div>    @Html.CheckBox(item)@item </div>*@
+           <input type="checkbox" name="Hobbies" value="@item"/> @item <br />
                 }
         <br />
         @Html.Label("Choose Country : ")
