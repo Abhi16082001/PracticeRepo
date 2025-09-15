@@ -1,0 +1,109 @@
+﻿@{
+    ViewBag.Title = "Chat";
+}
+
+<h2>Private Chat + Call</h2>
+
+<div>
+    <input type="text" id="toUser" placeholder="Receiver ConnectionId" />
+    <input type="text" id="message" placeholder="Message" />
+    <button onclick="sendMessage()">Send</button>
+</div>
+
+<ul id="messages"></ul>
+
+<hr />
+<button onclick="startCall()">Start Call</button>
+<video id="localVideo" autoplay muted></video>
+<video id="remoteVideo" autoplay></video>
+
+<script src="~/Scripts/jquery-3.7.0.min.js"></script>
+<script src="~/Scripts/jquery.signalR-2.4.3.min.js"></script>
+<script src="/signalr/hubs"></script>
+
+<script>
+    var token = localStorage.getItem("jwtToken");
+
+    $.signalR.ajaxDefaults.headers = { Authorization: "Bearer " + token };
+
+    var hub = $.connection.chatHub;
+
+    hub.client.receiveMessage = function (from, msg, time) {
+        $("#messages").append("<li><b>" + from + "</b>: " + msg + " (" + time + ")</li>");
+    };
+
+    $.connection.hub.start().done(function () {
+        console.log("Connected as logged in user");
+    });
+
+    function sendMessage() {
+        var toUser = $("#toUser").val();
+        var msg = $("#message").val();
+        hub.server.sendPrivateMessage(toUser, msg);
+    }
+</script>
+@*@section scripts {
+        <script>
+            var hub = $.connection.chathub;
+
+            // Receive text
+            hub.client.receiveMessage = function (from, msg, time) {
+                $("#messages").append("<li><b>" + from + "</b>: " + msg + " (" + time + ")</li>");
+            };
+
+            // WebRTC signaling handlers
+            hub.client.receiveOffer = function (from, offer) {
+                peer.setRemoteDescription(new RTCSessionDescription(JSON.parse(offer)));
+                peer.createAnswer().then(answer => {
+                    peer.setLocalDescription(answer);
+                    hub.server.sendAnswer(from, JSON.stringify(answer));
+                });
+            };
+
+            hub.client.receiveAnswer = function (from, answer) {
+                peer.setRemoteDescription(new RTCSessionDescription(JSON.parse(answer)));
+            };
+
+            hub.client.receiveCandidate = function (from, candidate) {
+                peer.addIceCandidate(new RTCIceCandidate(JSON.parse(candidate)));
+            };
+
+            $.connection.hub.start().done(function () {
+                console.log("Connected to hub: " + $.connection.hub.id);
+            });
+
+            function sendMessage() {
+                var toUser = $("#toUser").val();
+                var msg = $("#message").val();
+                hub.server.sendPrivateMessage(toUser, msg);
+            }
+
+            // WebRTC
+            var peer = new RTCPeerConnection();
+            navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+                .then(stream => {
+                    document.getElementById("localVideo").srcObject = stream;
+                    stream.getTracks().forEach(track => peer.addTrack(track, stream));
+                });
+
+            peer.ontrack = function (event) {
+                document.getElementById("remoteVideo").srcObject = event.streams[0];
+            };
+
+            peer.onicecandidate = function (event) {
+                if (event.candidate) {
+                    var toUser = $("#toUser").val();
+                    hub.server.sendIceCandidate(toUser, JSON.stringify(event.candidate));
+                }
+            };
+
+            function startCall() {
+                var toUser = $("#toUser").val();
+                peer.createOffer().then(offer => {
+                    peer.setLocalDescription(offer);
+                    hub.server.sendOffer(toUser, JSON.stringify(offer));
+                });
+            }
+        </script>
+    }*@
+
