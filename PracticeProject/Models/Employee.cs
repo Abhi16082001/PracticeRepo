@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -22,8 +23,11 @@ namespace PracticeProject.Models
             hobbylist.Add("Painting");
             hobbylist.Add("Writing");
         }
-
+        [Required(ErrorMessage ="Name is Required !")]
+        public int name { get; set; }
+        [Required(ErrorMessage = "Hobby is Required !")]
         public string Hobbies { get; set; }
+        [Required(ErrorMessage = "Country is Required !")]
         public string country { get; set; }
         public List<string> countrylist { get; set; }      
         public List<string> hobbylist { get; set; }

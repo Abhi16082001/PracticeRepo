@@ -1,19 +1,30 @@
 ﻿@model PracticeProject.Models.Employee
-    @using(@Html.BeginForm("Save", "Home", FormMethod.Post))
-            {
-        @Html.Label("Hobbies : ") <br />
-        foreach(var item in TempData["Hobbies"] as List<string>)
-                {
-@*<div>    @Html.CheckBox(item)@item </div>*@
-           <input type="checkbox" name="Hobbies" value="@item"/> @item <br />
-                }
+@using (@Html.BeginForm("Save", "Home", FormMethod.Post))
+{
+    @Html.Label("Enter Name:")
+    @Html.TextBoxFor(model => model.name)
+    @Html.ValidationMessageFor(model => model.name, null, new { style = "color:red;" })
+    <br />
+
+    @Html.Label("Hobbies : ")
+    <br />
+    foreach (var item in TempData["Hobbies"] as List<string>)
+    {
+        @*<div>    @Html.CheckBox(item)@item </div>*@
+        <input type="checkbox" name="Hobbies" value="@item" />
+        @item
         <br />
-        @Html.Label("Choose Country : ")
-        @Html.DropDownListFor(Model=>Model.country,new SelectList(TempData["countries"] as List<string>));
-        <br />
-        <br />
-        <input type="submit" value="Save" />
-            }
+    }
+    @Html.ValidationMessageFor(model => model.Hobbies, null, new { style = "color:red;" })
+    <br />
+    <br />
+    @Html.Label("Choose Country : ")
+    @Html.DropDownListFor(Model => Model.country, new SelectList(TempData["countries"] as List<string>), "--Select Country--");
+    @Html.ValidationMessageFor(model => model.country, null, new { style = "color:red;" })
+    <br />
+    <br />
+    <input type="submit" value="Save" />
+}
 
 
 <div>
