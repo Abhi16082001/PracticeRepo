@@ -21,6 +21,7 @@ namespace Chatting_Calling.Hubs
         public override Task OnConnected()
         {
             var userId = Context.User.Identity.Name; // Extracted from JWT
+            Console.WriteLine("Connected user: " + userId + " with ConnId: " + Context.ConnectionId);
             UserConnections[userId] = Context.ConnectionId;
             return base.OnConnected();
         }

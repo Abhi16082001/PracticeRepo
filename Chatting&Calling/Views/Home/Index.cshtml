@@ -1,7 +1,7 @@
 ﻿@{
     ViewBag.Title = "Chat";
 }
-
+<h1 id="Userprofile">Welcome </h1>
 <h2>Private Chat + Call</h2>
 
 <div>
@@ -20,13 +20,24 @@
 <script src="~/Scripts/jquery-3.7.0.min.js"></script>
 <script src="~/Scripts/jquery.signalR-2.4.3.min.js"></script>
 <script src="/signalr/hubs"></script>
+<script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+
 
 <script>
+
     var token = localStorage.getItem("jwtToken");
+    if (token) {
+        var decoded = jwt_decode(token);
+        console.log(decoded);
+        // ClaimTypes.Name maps to 'name' in JWT
+        var username = decoded["unique_name"];
 
-    $.signalR.ajaxDefaults.headers = { Authorization: "Bearer " + token };
+        // Display in HTML
+        document.getElementById("Userprofile").innerHTML += username;
+    }
+    var hub = $.connection.chathub;
+    $.connection.hub.qs = { 'access_token': token };
 
-    var hub = $.connection.chatHub;
 
     hub.client.receiveMessage = function (from, msg, time) {
         $("#messages").append("<li><b>" + from + "</b>: " + msg + " (" + time + ")</li>");
@@ -42,8 +53,14 @@
         hub.server.sendPrivateMessage(toUser, msg);
     }
 </script>
+
+
 @*@section scripts {
+        <script src="~/Scripts/jquery-3.7.0.min.js"></script>
+        <script src="~/Scripts/jquery.signalR-2.4.3.min.js"></script>
+        <script src="/signalr/hubs"></script>
         <script>
+
             var hub = $.connection.chathub;
 
             // Receive text
