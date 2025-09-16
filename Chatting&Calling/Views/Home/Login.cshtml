@@ -31,7 +31,7 @@
                 localStorage.setItem("jwtToken", res.token);
                 console.log("password: ", password);
                 // Redirect to Chat page
-                window.location.href = "/Home/Index";
+                window.location.href = "/Home/Chatting";
             },
             error: function () {
                 $("#error").text("Invalid username or password");
@@ -39,4 +39,5 @@
         });
     });
 </script>
+
 

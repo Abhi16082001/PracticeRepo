@@ -15,7 +15,11 @@ namespace Chatting_Calling.Controllers
 
         public ActionResult Login()
         {
+            return View();
+        }
 
+        public ActionResult Chatting()
+        {
             return View();
         }
     }

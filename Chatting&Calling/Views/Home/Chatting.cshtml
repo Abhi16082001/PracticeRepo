@@ -1,0 +1,80 @@
+﻿
+@{
+    ViewBag.Title = "Chatting";
+}
+
+<h1 id="Userprofile">Welcome </h1>
+
+<h2>Users</h2>
+<ul id="usersList"></ul>
+
+<h2>Chat Window</h2>
+<div>
+    <input type="text" id="message" placeholder="Message" />
+    <button onclick="sendMessage()" id="sendBtn">Send</button>
+</div>
+
+<ul id="messages"></ul>
+
+<script src="~/Scripts/jquery-3.7.0.min.js"></script>
+<script src="~/Scripts/jquery.signalR-2.4.3.min.js"></script>
+<script src="/signalr/hubs"></script>
+<script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+
+<script>
+    var token = localStorage.getItem("jwtToken");
+    localStorage.removeItem("jwtToken");
+    var username = "";
+
+    if (token) {
+        var decoded = jwt_decode(token);
+        username = decoded["unique_name"];
+        document.getElementById("Userprofile").innerHTML += username;
+    }
+
+    var hub = $.connection.chattingHub;
+    $.connection.hub.qs = { 'access_token': token }; // to take token from querystring because from header it wasn't able to detect it from header and This is how JWT is passed to SignalR 2.x because it does not natively support HTTP headers for WebSocket connections.
+
+    var selectedUser = ""; // currently chatting with
+
+    // Receive messages
+    hub.client.receiveMessage = function (from, msg, time) {
+        $("#messages").append("<li><b>" + from + "</b>: " + msg + " (" + time + ")</li>");
+    };
+
+    // Update user list with online status
+    hub.client.updateUserList = function (users) {
+        var list = $("#usersList");
+        list.empty();
+
+        users.forEach(u => {
+            if (u.Username === username) return; // skip self
+            console.log(u);
+            var status = u.IsOnline ? "Online" : "Offline";
+            var buttonState = u.IsOnline ? "" : "disabled";
+
+            var li = $("<li></li>").text(u.Username + " - " + status);
+            var chatBtn = $("<button " + buttonState + ">Chat</button>")
+                .click(function () {
+                    selectedUser = u.Username;
+                    alert("Selected user: " + selectedUser);
+                });
+
+            li.append(" ").append(chatBtn);
+            list.append(li);
+        });
+    };
+
+    $.connection.hub.start().done(function () {
+        console.log("Connected as " + username);
+    });
+
+    function sendMessage() {
+        var msg = $("#message").val();
+        if (!selectedUser) { alert("Select a user first"); return; }
+        hub.server.sendPrivateMessage(selectedUser, msg);
+        $("#message").val("");
+    }
+</script>
+
+
